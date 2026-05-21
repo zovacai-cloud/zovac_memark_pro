@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ZOVAC Memark Pro — Personal Build Guide</title>
+    <title>ZOVAC Memark Pro — Personal Local Build Guide</title>
     <style>
         :root {
             --primary: #6C4EF5;
+            --primary-dark: #5a3fd4;
+            --accent: #1DE9B6;
             --accent-warm: #E53935;
             --bg: #0f0f1a;
             --bg-card: #16162a;
@@ -15,201 +17,121 @@
             --text-muted: #a0a0b8;
             --text-dim: #6b6b8a;
             --border: #2a2a4a;
+            --border-light: #3a3a5a;
             --success: #1DE9B6;
             --warning: #FFB74D;
             --error: #E53935;
+            --info: #42A5F5;
             --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
             --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
             font-family: var(--font-body);
             background: var(--bg);
             color: var(--text);
             line-height: 1.7;
             font-size: 15px;
-            padding: 40px 20px;
         }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary); }
+        .nav-sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: var(--bg-card);
+            border-right: 1px solid var(--border);
+            overflow-y: auto;
+            z-index: 100;
+            padding: 24px 0;
         }
-
-        h1 {
-            font-size: 42px;
+        .nav-logo {
+            padding: 0 24px 24px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 16px;
+        }
+        .nav-logo h1 {
+            font-size: 22px;
             font-weight: 800;
-            margin-bottom: 12px;
             letter-spacing: -0.5px;
+            color: var(--text);
         }
-
-        .dot {
-            color: var(--accent-warm);
-        }
-
-        .subtitle {
-            font-size: 14px;
+        .nav-logo .dot { color: var(--accent-warm); }
+        .nav-logo .subtitle {
+            font-size: 11px;
             color: var(--text-dim);
             text-transform: uppercase;
             letter-spacing: 2px;
-            margin-bottom: 48px;
+            margin-top: 4px;
         }
-
+        .nav-section { margin-bottom: 8px; }
+        .nav-section-title {
+            padding: 8px 24px;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-dim);
+            font-weight: 700;
+        }
+        .nav-link {
+            display: block;
+            padding: 8px 24px 8px 32px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 13px;
+            border-left: 3px solid transparent;
+            transition: all 0.2s;
+        }
+        .nav-link:hover {
+            color: var(--text);
+            background: var(--bg-elevated);
+            border-left-color: var(--primary);
+        }
+        .nav-link.active {
+            color: var(--primary);
+            background: rgba(108, 78, 245, 0.08);
+            border-left-color: var(--primary);
+            font-weight: 600;
+        }
+        .main-content {
+            margin-left: 280px;
+            min-height: 100vh;
+        }
+        .content-section {
+            max-width: 900px;
+            padding: 48px 48px 64px;
+            border-bottom: 1px solid var(--border);
+        }
+        .content-section:last-child { border-bottom: none; }
         h2 {
             font-size: 28px;
             font-weight: 800;
-            margin: 64px 0 24px;
+            margin-bottom: 24px;
             color: var(--text);
             letter-spacing: -0.5px;
-            border-bottom: 2px solid var(--primary);
-            padding-bottom: 12px;
         }
-
         h3 {
             font-size: 20px;
             font-weight: 700;
             margin: 40px 0 16px;
-            color: var(--primary);
+            color: var(--text);
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--border);
         }
-
         h4 {
             font-size: 16px;
             font-weight: 700;
             margin: 28px 0 12px;
-            color: var(--text);
+            color: var(--primary);
         }
-
         p {
             margin-bottom: 16px;
             color: var(--text-muted);
         }
-
-        ul, ol {
-            margin: 12px 0 12px 24px;
-            color: var(--text-muted);
-        }
-
-        li {
-            margin-bottom: 8px;
-        }
-
-        pre, code {
-            font-family: var(--font-mono);
-            font-size: 13px;
-        }
-
-        pre {
-            background: var(--bg-elevated);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 20px;
-            overflow-x: auto;
-            margin: 16px 0;
-            line-height: 1.6;
-        }
-
-        code {
-            background: rgba(108, 78, 245, 0.1);
-            color: var(--primary);
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-size: 13px;
-        }
-
-        pre code {
-            background: none;
-            color: var(--text-muted);
-            padding: 0;
-        }
-
-        .callout {
-            border-left: 4px solid var(--primary);
-            background: rgba(108, 78, 245, 0.05);
-            padding: 16px 20px;
-            border-radius: 0 8px 8px 0;
-            margin: 20px 0;
-        }
-
-        .callout-critical {
-            border-left-color: var(--accent-warm);
-            background: rgba(229, 57, 53, 0.05);
-        }
-
-        .callout-success {
-            border-left-color: var(--success);
-            background: rgba(29, 233, 182, 0.05);
-        }
-
-        .callout-warning {
-            border-left-color: var(--warning);
-            background: rgba(255, 183, 77, 0.05);
-        }
-
-        .callout-title {
-            font-weight: 700;
-            color: var(--text);
-            margin-bottom: 8px;
-            font-size: 14px;
-        }
-
-        .flow-box {
-            background: var(--bg-elevated);
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            padding: 20px 24px;
-            margin: 16px 0;
-        }
-
-        .flow-box-header {
-            font-size: 18px;
-            font-weight: 800;
-            color: var(--text);
-            margin-bottom: 8px;
-        }
-
-        .flow-box-desc {
-            color: var(--text-muted);
-            font-size: 14px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 20px 0;
-            font-size: 14px;
-        }
-
-        th {
-            background: var(--bg-elevated);
-            color: var(--text);
-            font-weight: 700;
-            text-align: left;
-            padding: 12px 16px;
-            border-bottom: 2px solid var(--primary);
-        }
-
-        td {
-            padding: 12px 16px;
-            border-bottom: 1px solid var(--border);
-            color: var(--text-muted);
-            vertical-align: top;
-        }
-
-        .step-number {
-            display: inline-block;
-            width: 32px;
-            height: 32px;
-            background: var(--primary);
-            color: var(--bg);
-            border-radius: 50%;
-            text-align: center;
-            line-height: 32px;
-            font-weight: 700;
-            margin-right: 12px;
-        }
-
         .badge {
             display: inline-block;
             padding: 3px 10px;
@@ -220,248 +142,945 @@
             letter-spacing: 0.5px;
             margin-right: 6px;
         }
-
-        .badge-new {
+        .badge-personal {
             background: rgba(29, 233, 182, 0.15);
             color: var(--success);
             border: 1px solid rgba(29, 233, 182, 0.3);
         }
-
-        .badge-removed {
+        .badge-local {
+            background: rgba(66, 165, 245, 0.15);
+            color: var(--info);
+            border: 1px solid rgba(66, 165, 245, 0.3);
+        }
+        .badge-critical {
             background: rgba(229, 57, 53, 0.15);
             color: var(--accent-warm);
             border: 1px solid rgba(229, 57, 53, 0.3);
         }
-
-        .badge-modified {
-            background: rgba(255, 183, 77, 0.15);
-            color: var(--warning);
-            border: 1px solid rgba(255, 183, 77, 0.3);
+        .badge-feature {
+            background: rgba(108, 78, 245, 0.15);
+            color: var(--primary);
+            border: 1px solid rgba(108, 78, 245, 0.3);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        th {
+            background: var(--bg-elevated);
+            color: var(--text);
+            font-weight: 700;
+            text-align: left;
+            padding: 12px 16px;
+            border-bottom: 2px solid var(--primary);
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 1px;
+        }
+        td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-muted);
+            vertical-align: top;
+        }
+        tr:hover td { background: rgba(108, 78, 245, 0.03); }
+        pre, code {
+            font-family: var(--font-mono);
+            font-size: 13px;
+        }
+        pre {
+            background: var(--bg-elevated);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 20px;
+            overflow-x: auto;
+            margin: 16px 0;
+            line-height: 1.6;
+        }
+        code {
+            background: rgba(108, 78, 245, 0.1);
+            color: var(--primary);
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 13px;
+        }
+        pre code {
+            background: none;
+            color: var(--text-muted);
+            padding: 0;
+        }
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            margin: 20px 0;
+        }
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(108, 78, 245, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        .card-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text);
+        }
+        ul, ol {
+            margin: 12px 0 12px 24px;
+            color: var(--text-muted);
+        }
+        li { margin-bottom: 8px; }
+        .callout {
+            border-left: 4px solid var(--primary);
+            background: rgba(108, 78, 245, 0.05);
+            padding: 16px 20px;
+            border-radius: 0 8px 8px 0;
+            margin: 20px 0;
+        }
+        .callout-critical {
+            border-left-color: var(--accent-warm);
+            background: rgba(229, 57, 53, 0.05);
+        }
+        .callout-success {
+            border-left-color: var(--success);
+            background: rgba(29, 233, 182, 0.05);
+        }
+        .callout-warning {
+            border-left-color: var(--warning);
+            background: rgba(255, 183, 77, 0.05);
+        }
+        .callout-title {
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        .flow-box {
+            background: var(--bg-elevated);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin: 16px 0;
+            position: relative;
+        }
+        .flow-box::after {
+            content: "↓";
+            position: absolute;
+            bottom: -28px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--primary);
+            font-size: 20px;
+            font-weight: 700;
+        }
+        .flow-box:last-child::after { display: none; }
+        .flow-box-header {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 8px;
+        }
+        .flow-box-desc {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 32px 0;
+        }
+        .section-anchor {
+            display: block;
+            position: relative;
+            top: -20px;
+            visibility: hidden;
+        }
+        @media (max-width: 1024px) {
+            .nav-sidebar { width: 240px; }
+            .main-content { margin-left: 240px; }
+        }
+        @media (max-width: 768px) {
+            .nav-sidebar { display: none; }
+            .main-content { margin-left: 0; }
+            .content-section { padding: 24px; }
         }
     </style>
+<base target="_blank">
 </head>
 <body>
-    <div class="container">
-        <h1>ZOVAC<span class="dot">.</span> Memark Pro</h1>
-        <div class="subtitle">Personal Build Guide — Local Use Only</div>
-
-        <div class="callout callout-success">
-            <div class="callout-title">FOR PERSONAL USE ONLY</div>
-            <p>This guide is for building ZOVAC on your laptop for your own videos. No database, no web server, no React frontend. Just: screen recording → Gemini Gem conversation → YAML script → Python engine → polished video.</p>
+    <nav class="nav-sidebar">
+        <div class="nav-logo">
+            <h1>ZOVAC<span class="dot">.</span></h1>
+            <div class="subtitle">Personal Local Build Guide</div>
         </div>
-
-        <!-- WHAT YOU'RE BUILDING -->
-        <h2>What You're Building</h2>
-
-        <p>A simple workflow with 3 components:</p>
-
-        <div class="flow-box">
-            <div class="flow-box-header">1. Gemini Gem (Script Composer)</div>
-            <div class="flow-box-desc">You describe your video idea in plain English. The Gem interviews you and outputs a YAML script.</div>
+        <div class="nav-section">
+            <div class="nav-section-title">Foundation</div>
+            <a href="#sec-vision" class="nav-link">1. Product Vision</a>
+            <a href="#sec-what-we-build" class="nav-link">2. What We Build</a>
+            <a href="#sec-preview-system" class="nav-link">3. Preview System</a>
+            <a href="#sec-cuts-system" class="nav-link">4. Cuts System</a>
         </div>
-
-        <div class="flow-box">
-            <div class="flow-box-header">2. Region Helper (Python Script)</div>
-            <div class="flow-box-desc">Click-and-drag on a video frame to define regions. Saves coordinates to JSON automatically.</div>
+        <div class="nav-section">
+            <div class="nav-section-title">Features</div>
+            <a href="#sec-layout-options" class="nav-link">5. Smart Layout</a>
+            <a href="#sec-branding" class="nav-link">6. Branding</a>
+            <a href="#sec-gem" class="nav-link">7. Gemini Gem</a>
         </div>
-
-        <div class="flow-box">
-            <div class="flow-box-header">3. Pixel Engine (Python)</div>
-            <div class="flow-box-desc">Reads YAML + video + regions + brand. Renders a cinematic MP4 with zooms, effects, and subtitles.</div>
+        <div class="nav-section">
+            <div class="nav-section-title">Build</div>
+            <a href="#sec-architecture" class="nav-link">8. Architecture</a>
+            <a href="#sec-file-structure" class="nav-link">9. File Structure</a>
+            <a href="#sec-build-order" class="nav-link">10. Build Order</a>
+            <a href="#sec-usage" class="nav-link">11. Daily Usage</a>
         </div>
+    </nav>
+    <main class="main-content">
 
-        <div class="callout callout-warning">
-            <div class="callout-title">WHAT'S REMOVED FROM THE ORIGINAL SPEC</div>
-            <p>The master scope was designed for a SaaS product serving multiple users. For personal use, we're removing:</p>
+        <!-- SECTION 1: PRODUCT VISION -->
+        <section class="content-section" id="sec-vision">
+            <span class="section-anchor" id="sec-vision"></span>
+            <h2><span class="badge badge-personal">PERSONAL</span> <span class="badge badge-local">LOCAL</span> Product Vision</h2>
+
+            <div class="callout callout-critical">
+                <div class="callout-title">FOR PERSONAL USE ONLY — NO HOSTING, NO DATABASE, NO CLOUD</div>
+                <p>This version of ZOVAC Memark Pro is designed for <strong>one user on one laptop</strong>. You record your screen, chat with a Gemini Gem to get a script, click-and-drag to define regions, and run a Python command to get a polished video. Everything stays on your machine. No accounts, no subscriptions, no internet required after setup.</p>
+            </div>
+
+            <h3>1.1 The Problem</h3>
+            <p>You have built software tools. You want to show their impact in videos. But raw screen recordings are boring. Professional video editing takes weeks to learn and hours per video. You need a way to turn a 30-second screen recording into a Google-quality product showcase in under 30 minutes.</p>
+
+            <h3>1.2 The Solution</h3>
+            <p>A local Python application with three parts:</p>
+            <ol>
+                <li><strong>Talk to a Gem</strong> — Describe your video in plain English. It writes the script.</li>
+                <li><strong>Draw regions</strong> — Click-and-drag on your video frame to mark important UI elements.</li>
+                <li><strong>Run a command</strong> — The engine renders zooms, effects, subtitles, and transitions.</li>
+            </ol>
+
+            <h3>1.3 The Core Promise</h3>
+            <div class="callout callout-success">
+                <div class="callout-title">THE 30-MINUTE PROMISE</div>
+                <p>From screen recording to polished product video in <strong>under 30 minutes</strong>.</p>
+                <p>Record (5 min) → Chat with Gem (10 min) → Draw regions (5 min) → Render (3 min) → Tweak and re-render (5 min) → Done.</p>
+            </div>
+
+            <h3>1.4 What We Are NOT Building</h3>
+            <div class="callout callout-critical">
+                <div class="callout-title">EXPLICIT EXCLUSIONS</div>
+                <ul>
+                    <li><strong>No database</strong> — Projects are folders on disk, not rows in MySQL.</li>
+                    <li><strong>No web server</strong> — No Hono, no tRPC, no HTTP endpoints.</li>
+                    <li><strong>No React frontend</strong> — Your text editor + terminal + browser (for Gem chat) is the UI.</li>
+                    <li><strong>No user accounts</strong> — It is just you. No login, no auth.</li>
+                    <li><strong>No cloud rendering</strong> — Everything happens on your CPU. No AWS, no queue.</li>
+                    <li><strong>No file upload system</strong> — You copy files to a folder. That is it.</li>
+                    <li><strong>No render queue</strong> — You run one command, wait, done. No polling.</li>
+                    <li><strong>No multi-user anything</strong> — Single user, single machine.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- SECTION 2: PREVIEW SYSTEM -->
+        <section class="content-section" id="sec-preview-system">
+            <span class="section-anchor" id="sec-preview-system"></span>
+            <h2><span class="badge badge-feature">FEATURE</span> The Preview System</h2>
+
+            <h3>2.1 Why Preview Is Essential</h3>
+            <p>Without preview, your workflow is: write script → wait 4 minutes → discover zoom is wrong → edit script → wait 4 minutes → discover text is too small → edit script → wait 4 minutes. You give up after 2 iterations.</p>
+            <p>With preview: write script → wait 30 seconds → see result → edit script → wait 30 seconds → see result. You iterate 10 times in 10 minutes and get a perfect video.</p>
+
+            <div class="callout callout-success">
+                <div class="callout-title">HOW PREVIEW WORKS — THE FULL EXPLANATION</div>
+                <p><strong>Preview Mode</strong> is a fast, low-resolution render of a subset of your video. It is not magic. It is the same engine running with optimized settings:</p>
+                <ul>
+                    <li><strong>Resolution drops to 960×540</strong> — Quarter of Full HD = 4× fewer pixels to process</li>
+                    <li><strong>Frame rate drops to 24fps</strong> — Instead of 60fps = 2.5× fewer frames</li>
+                    <li><strong>Max duration capped at 20 seconds</strong> — Even if your script says 2 minutes</li>
+                    <li><strong>FFmpeg preset: ultrafast</strong> — Sacrifices compression for speed</li>
+                    <li><strong>Effects simplified</strong> — No motion blur, basic subtitle fade instead of per-character animation</li>
+                </ul>
+                <p><strong>Result:</strong> A 20-second preview renders in ~30 seconds instead of ~4 minutes.</p>
+            </div>
+
+            <h3>2.2 Preview Commands</h3>
+            <pre>
+# Preview the ENTIRE script (first 20 seconds only)
+python engine/render.py \
+  --script projects/demo/script.yaml \
+  --regions projects/demo/regions.json \
+  --output-dir projects/demo/output \
+  --preview
+
+# Preview a SINGLE scene by its ID
+python engine/render.py \
+  --script projects/demo/script.yaml \
+  --regions projects/demo/regions.json \
+  --output-dir projects/demo/output \
+  --scene search_bar_demo \
+  --preview
+
+# Preview a SINGLE cut by its ID
+python engine/render.py \
+  --script projects/demo/script.yaml \
+  --regions projects/demo/regions.json \
+  --output-dir projects/demo/output \
+  --cut search_demo \
+  --preview
+
+# Preview MULTIPLE cuts together
+python engine/render.py \
+  --script projects/demo/script.yaml \
+  --regions projects/demo/regions.json \
+  --output-dir projects/demo/output \
+  --cut intro_problem,search_demo \
+  --preview
+            </pre>
+
+            <h3>2.3 Preview Output Files</h3>
+            <table>
+                <tr>
+                    <th>Command</th>
+                    <th>Output File</th>
+                    <th>Contains</th>
+                </tr>
+                <tr>
+                    <td><code>--preview</code> (no scene/cut)</td>
+                    <td><code>preview_full.mp4</code></td>
+                    <td>First 20 seconds of the full script</td>
+                </tr>
+                <tr>
+                    <td><code>--scene search_bar_demo --preview</code></td>
+                    <td><code>preview_scene_search_bar_demo.mp4</code></td>
+                    <td>Only that scene's time range, preview quality</td>
+                </tr>
+                <tr>
+                    <td><code>--cut search_demo --preview</code></td>
+                    <td><code>preview_cut_search_demo.mp4</code></td>
+                    <td>Only that cut's time range, preview quality</td>
+                </tr>
+                <tr>
+                    <td><code>--cut A,B --preview</code></td>
+                    <td><code>preview_cut_A_B.mp4</code></td>
+                    <td>Both cuts assembled in order, preview quality</td>
+                </tr>
+            </table>
+
+            <h3>2.4 The Iteration Workflow</h3>
+            <div class="callout callout-success">
+                <div class="callout-title">STEP-BY-STEP ITERATION</div>
+                <p>1. Chat with Gem → get YAML → save to <code>script.yaml</code></p>
+                <p>2. Preview scene 1: <code>--scene intro --preview</code> → watch → adjust YAML</p>
+                <p>3. Preview scene 2: <code>--scene search_demo --preview</code> → watch → adjust YAML</p>
+                <p>4. Preview scene 3: <code>--scene dashboard --preview</code> → watch → adjust YAML</p>
+                <p>5. Preview all together: <code>--cut intro,search_demo,dashboard --preview</code> → watch flow</p>
+                <p>6. Full render: remove <code>--preview</code> and <code>--scene/--cut</code> → wait 3-4 minutes → done</p>
+            </div>
+
+            <h3>2.5 Preview Technical Spec</h3>
+            <table>
+                <tr>
+                    <th>Setting</th>
+                    <th>Full Render</th>
+                    <th>Preview Mode</th>
+                    <th>Speed Gain</th>
+                </tr>
+                <tr>
+                    <td>Resolution</td>
+                    <td>1920×1080</td>
+                    <td>960×540</td>
+                    <td>4× faster</td>
+                </tr>
+                <tr>
+                    <td>Frame Rate</td>
+                    <td>60fps</td>
+                    <td>24fps</td>
+                    <td>2.5× faster</td>
+                </tr>
+                <tr>
+                    <td>Max Duration</td>
+                    <td>Unlimited</td>
+                    <td>20 seconds cap</td>
+                    <td>Proportional</td>
+                </tr>
+                <tr>
+                    <td>FFmpeg Preset</td>
+                    <td>medium</td>
+                    <td>ultrafast</td>
+                    <td>3× faster</td>
+                </tr>
+                <tr>
+                    <td>Motion Blur</td>
+                    <td>Full directional blur</td>
+                    <td>Disabled</td>
+                    <td>Saves per-frame calc</td>
+                </tr>
+                <tr>
+                    <td>Subtitle Animation</td>
+                    <td>Per-character or per-word</td>
+                    <td>Simple fade-in only</td>
+                    <td>Saves text layout</td>
+                </tr>
+                <tr>
+                    <td>Callout Stroke</td>
+                    <td>Animated corner-by-corner</td>
+                    <td>Instant full box</td>
+                    <td>Saves stroke frames</td>
+                </tr>
+                <tr>
+                    <td><strong>Total Speed</strong></td>
+                    <td>~4 minutes for 40s video</td>
+                    <td>~30 seconds for 20s preview</td>
+                    <td><strong>~8× faster</strong></td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- SECTION 3: CUTS SYSTEM -->
+        <section class="content-section" id="sec-cuts-system">
+            <span class="section-anchor" id="sec-cuts-system"></span>
+            <h2><span class="badge badge-feature">FEATURE</span> Cuts and Granular Preview</h2>
+
+            <h3>3.1 What Are Cuts?</h3>
+            <p>A <strong>cut</strong> is a user-defined segment of the source video with a label. Cuts let you break a long video into manageable pieces, focus on one piece at a time, and preview/render them independently.</p>
+
+            <div class="callout callout-success">
+                <div class="callout-title">EXAMPLE: 30-Second Video with 5 Cuts</div>
+                <pre>
+cuts:
+  - id: "problem_hook"
+    time: "0:00 - 0:05"
+    label: "Problem Hook"
+    description: "Show the frustrating old way"
+
+  - id: "search_demo"
+    time: "0:05 - 0:13"
+    label: "Search Feature"
+    description: "Zoom to search bar, show instant results"
+
+  - id: "dashboard_wow"
+    time: "0:13 - 0:20"
+    label: "Dashboard Reveal"
+    description: "Pan across dashboard, spotlight key metrics"
+
+  - id: "impact_proof"
+    time: "0:20 - 0:26"
+    label: "Impact Proof"
+    description: "Show chart, 3D floating trophy icon"
+
+  - id: "cta_lockup"
+    time: "0:26 - 0:30"
+    label: "Call to Action"
+    description: "Clean logo, URL, tagline"
+
+scenes:
+  - id: "problem_hook"
+    time: "0:00 - 0:05"
+    visual:
+      type: "fullscreen"
+    subtitle:
+      text: "Still doing this manually?"
+      style: "fade_in_word_by_word"
+    transition_out:
+      type: "zoom_blur_push"
+      duration: "0.5s"
+
+  - id: "search_demo"
+    time: "0:05 - 0:13"
+    visual:
+      type: "zoom"
+      target: "search_bar"
+      zoom_level: 2.5
+      easing: "cubic_ease_in_out"
+    effects:
+      - type: "callout_box"
+        target: "search_bar"
+        color: "#6C4EF5"
+        animated_stroke: true
+    subtitle:
+      text: "Find anything in under a second"
+      style: "typewriter"
+    transition_out:
+      type: "crossfade"
+      duration: "0.3s"
+                </pre>
+            </div>
+
+            <h3>3.2 Cut vs Scene</h3>
+            <table>
+                <tr>
+                    <th>Property</th>
+                    <th>Cut</th>
+                    <th>Scene</th>
+                </tr>
+                <tr>
+                    <td><strong>Purpose</strong></td>
+                    <td>Organizational — groups scenes into chunks</td>
+                    <td>Functional — defines what happens in a time range</td>
+                </tr>
+                <tr>
+                    <td><strong>Contains</strong></td>
+                    <td>id, time range, label, description</td>
+                    <td>id, time range, visual, effects, subtitle, transition</td>
+                </tr>
+                <tr>
+                    <td><strong>Preview</strong></td>
+                    <td>Can preview all scenes in one cut together</td>
+                    <td>Can preview one scene alone</td>
+                </tr>
+                <tr>
+                    <td><strong>Required?</strong></td>
+                    <td>Optional — if omitted, one cut = one scene</td>
+                    <td>Required — every time range must have a scene</td>
+                </tr>
+            </table>
+
+            <h3>3.3 Granular Preview Workflow</h3>
+            <pre>
+# You have a 30-second video with 5 cuts.
+# You want to perfect cut #2 (search_demo) before touching the rest.
+
+# Step 1: Preview just the search_demo cut
+python engine/render.py \
+  --script projects/demo/script.yaml \
+  --regions projects/demo/regions.json \
+  --output-dir projects/demo/output \
+  --cut search_demo \
+  --preview
+
+# Output: preview_cut_search_demo.mp4 (8 seconds, preview quality)
+# You watch it. The zoom feels too slow.
+
+# Step 2: Edit script.yaml
+# Change: zoom_level: 2.5 -> zoom_level: 1.8
+# Change: easing: cubic_ease_in_out -> easing: spring
+
+# Step 3: Re-preview the same cut
+python engine/render.py ... --cut search_demo --preview
+
+# Output: preview_cut_search_demo.mp4 (overwritten with new version)
+# You watch it. Perfect.
+
+# Step 4: Move to next cut
+python engine/render.py ... --cut dashboard_wow --preview
+
+# Step 5: When all cuts are perfect, preview them together
+python engine/render.py ... --cut problem_hook,search_demo,dashboard_wow,impact_proof,cta_lockup --preview
+
+# Step 6: Full quality render
+python engine/render.py \
+  --script projects/demo/script.yaml \
+  --regions projects/demo/regions.json \
+  --output-dir projects/demo/output
+
+# Output: myapp_showcase_master.mp4 (full quality, all cuts assembled)
+            </pre>
+
+            <h3>3.4 Cut Assembly Rules</h3>
             <ul>
-                <li><strong>All database code</strong> (MySQL, Drizzle ORM, schema.ts, migrations)</li>
-                <li><strong>All API code</strong> (Hono server, tRPC routers, HTTP endpoints)</li>
-                <li><strong>All React frontend code</strong> (Dashboard, ProjectEditor, BrandManager, VideoLibrary)</li>
-                <li><strong>File upload system</strong> (You just point to local files)</li>
-                <li><strong>Render queue & job tracking</strong> (You run one command, wait, done)</li>
-                <li><strong>Multi-format exports</strong> (We'll start with just 16:9, add 9:16/1:1 later if needed)</li>
+                <li><strong>Order matters:</strong> Cuts are assembled in the order they appear in the <code>cuts:</code> list.</li>
+                <li><strong>Time ranges must not overlap:</strong> Cut A ends at 0:05, Cut B starts at 0:05. No gaps, no overlaps.</li>
+                <li><strong>Scenes within a cut:</strong> A cut can contain multiple scenes. All scenes in a cut are rendered together with their transitions.</li>
+                <li><strong>Cut-to-cut transitions:</strong> The last scene of Cut A and the first scene of Cut B are joined with the last scene's <code>transition_out</code> settings.</li>
+                <li><strong>Missing cuts:</strong> If <code>cuts:</code> is omitted, the engine treats each scene as its own cut.</li>
             </ul>
-        </div>
 
-        <!-- SYSTEM REQUIREMENTS -->
-        <h2>System Requirements</h2>
+            <div class="callout callout-warning">
+                <div class="callout-title">WHY CUTS ARE BETTER THAN SCENES ALONE</div>
+                <p>Scenes are granular (5-10 seconds each). Previewing one scene at a time means you lose context — you cannot see how the transition from Scene 2 to Scene 3 feels.</p>
+                <p>Cuts are logical chunks (5-15 seconds, 1-3 scenes each). Previewing a cut shows you the <strong>flow within a narrative beat</strong> — the problem, the solution, the proof. This is the right granularity for creative iteration.</p>
+            </div>
+        </section>
 
-        <h3>Software You Need</h3>
-        <ol>
-            <li><strong>Python 3.10+</strong> — <code>python3 --version</code> to check</li>
-            <li><strong>FFmpeg</strong> — <code>ffmpeg -version</code> to check. If missing: <code>brew install ffmpeg</code> (Mac) or download from ffmpeg.org</li>
-            <li><strong>pip packages:</strong> <code>pip install opencv-python pillow pyyaml --break-system-packages</code></li>
-            <li><strong>A text editor</strong> — VS Code, Sublime, Notepad++, or even TextEdit/Notepad</li>
-            <li><strong>Google AI Studio account</strong> — Free at aistudio.google.com (for creating the Gemini Gem)</li>
-        </ol>
+        <!-- SECTION 4: SMART LAYOUT -->
+        <section class="content-section" id="sec-layout-options">
+            <span class="section-anchor" id="sec-layout-options"></span>
+            <h2><span class="badge badge-feature">FEATURE</span> Smart Layout Options</h2>
 
-        <h3>Hardware</h3>
-        <ul>
-            <li>Any laptop from the last 5 years</li>
-            <li>At least 8GB RAM (16GB recommended)</li>
-            <li>~2GB free disk space per project</li>
-        </ul>
+            <h3>4.1 The Problem: 16:9 Source to 9:16 Output</h3>
+            <p>Your screen recording is 16:9 (1920×1080). But Instagram Reels and TikTok need 9:16 (1080×1920). A naive center-crop loses 56% of the width. If your zoom target is on the left side of the screen, it gets chopped off.</p>
 
-        <div class="callout">
-            <div class="callout-title">RENDERING SPEED EXPECTATIONS</div>
-            <p>A 40-second video with 4 scenes takes about <strong>2-4 minutes</strong> to render on a modern laptop (M1 MacBook Air, 2020 ThinkPad, etc). Older machines may take 5-10 minutes. This is normal — you're processing every frame.</p>
-        </div>
+            <div class="callout callout-critical">
+                <div class="callout-title">THE DANGER OF NAIVE CENTER-CROP</div>
+                <p>Source: 1920×1080. Target region: search bar at x=400 (left side).</p>
+                <p>Naive center-crop for 9:16: crop 607px wide from center (x=656 to x=1263).</p>
+                <p>Your search bar at x=400 is <strong>completely outside the crop window</strong>. The 9:16 video shows nothing relevant.</p>
+            </div>
 
-        <!-- FILE STRUCTURE -->
-        <h2>File Structure (Simplified)</h2>
+            <h3>4.2 The Solution: Content-Aware Panning</h3>
+            <p>The engine calculates where the 9:16 viewport must be positioned so the zoom target stays visible and centered.</p>
 
-        <pre>
-zovac-personal/
-│
-├── engine/                  # The Python renderer (build once)
-│   ├── render.py            # Main entry point
-│   ├── script_parser.py     # YAML parsing
-│   ├── compositor.py        # Frame-by-frame rendering
-│   ├── effects.py           # Callout boxes, arrows, spotlight
-│   ├── subtitles.py         # Text animations
-│   ├── motion.py            # Zoom/pan/easing
-│   ├── transitions.py       # Crossfade, wipes
-│   ├── exporter.py          # Final MP4 assembly
-│   ├── validator.py         # Script validation
-│   ├── brand.py             # Brand colors/fonts
-│   └── requirements.txt     # Python dependencies
-│
-├── helpers/                 # Utility scripts
-│   └── region_helper.py     # Click-to-define regions
-│
-├── projects/                # Your video projects
-│   └── myapp_demo/
-│       ├── source.mp4       # Your screen recording
-│       ├── script.yaml      # Gem generates this
-│       ├── regions.json     # region_helper generates this
-│       └── output/
-│           └── final.mp4    # Rendered result
-│
-└── brand.json               # Your brand colors (optional)
-</pre>
+            <pre>
+# Smart crop calculation for 9:16
+source_width = 1920
+source_height = 1080
+viewport_width = source_height * 9 / 16  # = 607.5px
 
-        <!-- BUILD STEPS -->
-        <h2>Build Steps</h2>
+target = regions["search_bar"]  # {x: 400, y: 20, w: 600, h: 80}
+target_center_x = target["x"] + target["w"] / 2  # = 700
 
-        <h3><span class="step-number">1</span> Build the Region Helper</h3>
+# Position viewport so target is centered
+crop_x = target_center_x - viewport_width / 2  # = 700 - 303 = 397
 
-        <p>This is a simple script using OpenCV's built-in <code>selectROI</code> function. It lets you click-and-drag to define regions on a video frame.</p>
+# Clamp to frame bounds
+crop_x = max(0, min(crop_x, source_width - viewport_width))
+# = max(0, min(397, 1312)) = 397
 
-        <h4>What to Create:</h4>
-        <p><code>helpers/region_helper.py</code></p>
+# FFmpeg crop filter: crop=607:1080:397:0
+# Result: The search bar is perfectly centered in the 9:16 frame
+            </pre>
 
-        <pre><code>import cv2
-import json
-import sys
+            <h3>4.3 Layout Strategies</h3>
+            <table>
+                <tr>
+                    <th>Strategy</th>
+                    <th>Behavior</th>
+                    <th>Use Case</th>
+                </tr>
+                <tr>
+                    <td><code>center_crop</code></td>
+                    <td>Always crop from center. Target position ignored.</td>
+                    <td>Target is already near center. Simple and stable.</td>
+                </tr>
+                <tr>
+                    <td><code>follow_target</code></td>
+                    <td>Pan crop window to keep zoom target centered.</td>
+                    <td>Target moves around the screen. Most common case.</td>
+                </tr>
+                <tr>
+                    <td><code>safe_zone</code></td>
+                    <td>Keep content within brand-defined safe margins.</td>
+                    <td>Logo or critical UI near edges. Prevents cropping important elements.</td>
+                </tr>
+                <tr>
+                    <td><code>manual_pan</code></td>
+                    <td>User specifies pan offset per scene in YAML.</td>
+                    <td>Advanced: fine-tune exactly where the crop sits.</td>
+                </tr>
+            </table>
 
-def select_regions(video_path, output_json_path):
-    """
-    Opens a video frame, lets user draw regions, saves to JSON.
-    Usage: python region_helper.py source.mp4 regions.json
-    """
-    # Open video
-    cap = cv2.VideoCapture(video_path)
-    
-    # Seek to 0.5 seconds in (to avoid black frames)
-    fps = cap.get(cv2.CAP_PROP_FPS)
-    cap.set(cv2.CAP_PROP_POS_FRAMES, int(fps * 0.5))
-    
-    ret, frame = cap.read()
-    if not ret:
-        print("❌ Could not read video frame")
-        sys.exit(1)
-    
-    cap.release()
-    
-    regions = {}
-    
-    print("\n📦 ZOVAC Region Helper")
-    print("━" * 50)
-    print("Instructions:")
-    print("  • Click and drag to draw a box")
-    print("  • Press ENTER to confirm")
-    print("  • Press C to cancel current region")
-    print("  • Close window when done")
-    print("━" * 50)
-    
-    while True:
-        region_name = input("\nRegion name (or press Enter to finish): ").strip()
-        
-        if not region_name:
-            break
-        
-        print(f"\n🎯 Draw region: {region_name}")
-        print("   (Click-drag on the video frame, then press ENTER)")
-        
-        # Let user select ROI
-        bbox = cv2.selectROI("Select Region", frame, fromCenter=False, showCrosshair=True)
-        
-        if bbox[2] > 0 and bbox[3] > 0:  # Valid selection
-            regions[region_name] = {
-                "x": int(bbox[0]),
-                "y": int(bbox[1]),
-                "w": int(bbox[2]),
-                "h": int(bbox[3])
-            }
-            print(f"   ✅ Saved: {bbox}")
-        else:
-            print(f"   ⚠️  Skipped (no selection)")
-    
-    cv2.destroyAllWindows()
-    
-    # Save to JSON
-    with open(output_json_path, 'w') as f:
-        json.dump(regions, f, indent=2)
-    
-    print(f"\n✅ Saved {len(regions)} regions to {output_json_path}")
-    for name, coords in regions.items():
-        print(f"   • {name}: {coords}")
+            <h3>4.4 YAML Configuration for Layout</h3>
+            <pre>
+project:
+  name: "MyApp Demo"
+  source_video: "source.mp4"
+  output_name: "myapp_demo"
+  fps: 30
+  resolution: "1920x1080"
 
-if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print("Usage: python region_helper.py VIDEO_PATH OUTPUT_JSON")
-        print("Example: python region_helper.py ../projects/demo/source.mp4 ../projects/demo/regions.json")
-        sys.exit(1)
-    
-    select_regions(sys.argv[1], sys.argv[2])
-</code></pre>
+  # Layout configuration
+  source_aspect: "16:9"           # Your recording's aspect ratio
+  output_aspect: "9:16"         # What you need for social
+  layout_strategy: "follow_target"  # center_crop | follow_target | safe_zone | manual_pan
 
-        <h4>Test It:</h4>
-        <pre><code># 1. Create a test project folder
-mkdir -p projects/test_project
+  # Safe zone margins (pixels from edges that must not be cropped)
+  safe_zone:
+    top: 60
+    bottom: 60
+    left: 100
+    right: 100
 
-# 2. Put your screen recording in it (rename to source.mp4)
-cp ~/Desktop/my_recording.mp4 projects/test_project/source.mp4
+  export_formats:
+    - "16:9"                      # Master render (full frame)
+    - "9:16"                      # Vertical with smart panning
+    - "1:1"                       # Square with smart centering
 
-# 3. Run the region helper
-python helpers/region_helper.py projects/test_project/source.mp4 projects/test_project/regions.json
+scenes:
+  - id: "search_demo"
+    time: "0:05 - 0:13"
+    visual:
+      type: "zoom"
+      target: "search_bar"
+      zoom_level: 2.0
+      easing: "cubic_ease_in_out"
+      # Optional: override layout for this scene
+      layout_override:
+        strategy: "follow_target"
+        pan_offset: 0               # Additional horizontal shift (pixels)
+    effects:
+      - type: "callout_box"
+        target: "search_bar"
+        color: "#6C4EF5"
+    subtitle:
+      text: "Find anything instantly"
+      style: "typewriter"
+    transition_out:
+      type: "crossfade"
+      duration: "0.3s"
+            </pre>
 
-# 4. A window opens showing your video frame
-# 5. Click-drag to draw boxes, press Enter after each
-# 6. Type region names when prompted (e.g., "search_bar", "dashboard")
-# 7. Press Enter with empty name when done
-</code></pre>
+            <h3>4.5 How the Engine Handles Layout</h3>
+            <ol>
+                <li><strong>Master render (16:9):</strong> Rendered normally. Full frame. All effects, zooms, subtitles applied at native resolution.</li>
+                <li><strong>9:16 export:</strong> For each scene, calculate crop window position based on <code>layout_strategy</code> and the scene's <code>target</code>. Re-render the scene with the crop window offset. The zoom target stays centered in the vertical frame.</li>
+                <li><strong>1:1 export:</strong> Similar to 9:16 but with square crop. Crop window is centered on target, then clamped to safe zones.</li>
+            </ol>
 
-        <div class="callout callout-success">
-            <div class="callout-title">✅ EXIT CRITERIA</div>
-            <p>A <code>regions.json</code> file exists with your defined regions. Open it and verify coordinates look reasonable (x, y, w, h as integers).</p>
-        </div>
+            <div class="callout callout-success">
+                <div class="callout-title">THE RESULT</div>
+                <p>A 16:9 source video with a search bar on the left side produces a 9:16 vertical video where the search bar is perfectly visible and centered. The crop window "follows" the action instead of blindly center-cropping. Your vertical videos look intentional, not accidentally cropped.</p>
+            </div>
+        </section>
 
-        <h3><span class="step-number">2</span> Build the Gemini Gem</h3>
+        <!-- SECTION 5: BRANDING -->
+        <section class="content-section" id="sec-branding">
+            <span class="section-anchor" id="sec-branding"></span>
+            <h2><span class="badge badge-feature">FEATURE</span> Branding System</h2>
 
-        <p>The Gem is just a system prompt you paste into Google AI Studio. I'll give you the complete prompt below.</p>
+            <h3>5.1 Per-Project plus Global Brand Config</h3>
+            <p>You can have a default brand that applies to all projects, and override it per-project when needed.</p>
 
-        <h4>Steps:</h4>
-        <ol>
-            <li>Go to <a href="https://aistudio.google.com" target="_blank">aistudio.google.com</a></li>
-            <li>Click "New Gem" (or "Create New" → "Gem")</li>
-            <li>Paste the system prompt below into the instructions field</li>
-            <li>Name it: "ZOVAC Script Composer"</li>
-            <li>Save</li>
-        </ol>
+            <h4>Global Brand (Default Fallback)</h4>
+            <pre>
+# ~/.zovac/brand.json
+{
+  "brand": "default",
+  "colors": {
+    "primary": "#6C4EF5",
+    "secondary": "#1DE9B6",
+    "text_light": "#FFFFFF",
+    "text_dark": "#1A1A2E",
+    "callout_stroke": "#6C4EF5",
+    "subtitle_background": "#000000",
+    "word_highlight": "#6C4EF5"
+  },
+  "subtitle": {
+    "font_size": 38,
+    "font_weight": "bold",
+    "max_width_pct": 80,
+    "bottom_margin": 72,
+    "background": true,
+    "background_radius": 8,
+    "word_highlight_color": "#6C4EF5"
+  },
+  "logo": {
+    "path": "/Users/you/logos/myapp_logo.png",
+    "position": "top_right",
+    "margin": 32,
+    "opacity": 0.9
+  },
+  "safe_zone": {
+    "top": 60,
+    "bottom": 60,
+    "left": 80,
+    "right": 80
+  }
+}
+            </pre>
 
-        <h4>The System Prompt:</h4>
-        <pre><code># ZOVAC Script Composer — System Prompt
+            <h4>Per-Project Brand (Override)</h4>
+            <pre>
+# projects/client_a/brand.json
+{
+  "brand": "client_a",
+  "colors": {
+    "primary": "#FF6B35",
+    "secondary": "#004E89",
+    "callout_stroke": "#FF6B35",
+    "word_highlight": "#FF6B35"
+  },
+  "subtitle": {
+    "font_size": 42,
+    "bottom_margin": 90
+  },
+  "logo": {
+    "path": "/Users/you/logos/client_a_logo.png",
+    "position": "bottom_left",
+    "opacity": 0.8
+  }
+}
+
+# In script.yaml:
+project:
+  brand_profile: "client_a"  # Engine looks for projects/client_a/brand.json first
+                            # Falls back to ~/.zovac/brand.json if not found
+            </pre>
+
+            <h3>5.2 Brand Resolution Order</h3>
+            <ol>
+                <li><strong>Project brand:</strong> <code>projects/{project_name}/brand.json</code> — highest priority</li>
+                <li><strong>Named brand:</strong> <code>~/.zovac/brands/{brand_name}.json</code> — for reusable brands</li>
+                <li><strong>Global default:</strong> <code>~/.zovac/brand.json</code> — your personal default</li>
+                <li><strong>Hardcoded fallback:</strong> <code>DEFAULT_BRAND</code> in <code>engine/brand.py</code> — always works</li>
+            </ol>
+
+            <h3>5.3 Brand Config Schema</h3>
+            <table>
+                <tr>
+                    <th>Field</th>
+                    <th>Type</th>
+                    <th>Range</th>
+                    <th>Default</th>
+                </tr>
+                <tr><td>colors.primary</td><td>Hex string</td><td>#000000 - #FFFFFF</td><td>#6C4EF5</td></tr>
+                <tr><td>colors.secondary</td><td>Hex string</td><td>#000000 - #FFFFFF</td><td>#1DE9B6</td></tr>
+                <tr><td>colors.text_light</td><td>Hex string</td><td>#000000 - #FFFFFF</td><td>#FFFFFF</td></tr>
+                <tr><td>colors.text_dark</td><td>Hex string</td><td>#000000 - #FFFFFF</td><td>#1A1A2E</td></tr>
+                <tr><td>colors.callout_stroke</td><td>Hex string</td><td>#000000 - #FFFFFF</td><td>#6C4EF5</td></tr>
+                <tr><td>colors.subtitle_background</td><td>Hex string</td><td>#000000 - #FFFFFF</td><td>#000000</td></tr>
+                <tr><td>colors.word_highlight</td><td>Hex string</td><td>#000000 - #FFFFFF</td><td>#6C4EF5</td></tr>
+                <tr><td>subtitle.font_size</td><td>Integer</td><td>20-72 px</td><td>38</td></tr>
+                <tr><td>subtitle.font_weight</td><td>String</td><td>bold | normal</td><td>bold</td></tr>
+                <tr><td>subtitle.max_width_pct</td><td>Integer</td><td>50-100 %</td><td>80</td></tr>
+                <tr><td>subtitle.bottom_margin</td><td>Integer</td><td>20-150 px</td><td>72</td></tr>
+                <tr><td>subtitle.background</td><td>Boolean</td><td>true | false</td><td>true</td></tr>
+                <tr><td>subtitle.background_radius</td><td>Integer</td><td>0-20 px</td><td>8</td></tr>
+                <tr><td>logo.path</td><td>String | null</td><td>Absolute path to PNG/SVG</td><td>null</td></tr>
+                <tr><td>logo.position</td><td>Enum</td><td>top_right | top_left | bottom_right | bottom_left</td><td>top_right</td></tr>
+                <tr><td>logo.margin</td><td>Integer</td><td>8-80 px</td><td>32</td></tr>
+                <tr><td>logo.opacity</td><td>Float</td><td>0.1-1.0</td><td>0.9</td></tr>
+                <tr><td>safe_zone.top</td><td>Integer</td><td>0-200 px</td><td>60</td></tr>
+                <tr><td>safe_zone.bottom</td><td>Integer</td><td>0-200 px</td><td>60</td></tr>
+                <tr><td>safe_zone.left</td><td>Integer</td><td>0-200 px</td><td>80</td></tr>
+                <tr><td>safe_zone.right</td><td>Integer</td><td>0-200 px</td><td>80</td></tr>
+            </table>
+
+            <h3>5.4 Creating Brand Configs</h3>
+            <p>Since there is no GUI, you edit JSON directly. Use VS Code with JSON schema validation, or create from terminal:</p>
+            <pre>
+# Create your personal default brand
+mkdir -p ~/.zovac
+cat > ~/.zovac/brand.json << 'EOF'
+{
+  "brand": "my_personal",
+  "colors": {
+    "primary": "#FF6B35",
+    "secondary": "#004E89",
+    "text_light": "#FFFFFF",
+    "text_dark": "#1A1A2E",
+    "callout_stroke": "#FF6B35",
+    "subtitle_background": "#000000",
+    "word_highlight": "#FF6B35"
+  },
+  "subtitle": {
+    "font_size": 40,
+    "font_weight": "bold",
+    "max_width_pct": 85,
+    "bottom_margin": 80,
+    "background": true,
+    "background_radius": 10
+  },
+  "logo": {
+    "path": null,
+    "position": "top_right",
+    "margin": 40,
+    "opacity": 0.85
+  },
+  "safe_zone": {
+    "top": 80,
+    "bottom": 80,
+    "left": 100,
+    "right": 100
+  }
+}
+EOF
+            </pre>
+        </section>
+
+        <!-- SECTION 6: GEMINI GEM -->
+        <section class="content-section" id="sec-gem">
+            <span class="section-anchor" id="sec-gem"></span>
+            <h2><span class="badge badge-feature">FEATURE</span> Gemini Gem Script Composer</h2>
+
+            <h3>6.1 What the Gem Does</h3>
+            <p>The Gem is a <strong>creative director that interviews you in plain English</strong> and outputs a complete, valid ZOVAC YAML script. It knows every valid enum value, every scene structure rule, and every constraint. It prevents errors before they happen.</p>
+
+            <h3>6.2 Error Prevention Features</h3>
+            <table>
+                <tr>
+                    <th>Error Type</th>
+                    <th>How Gem Prevents It</th>
+                </tr>
+                <tr>
+                    <td><strong>Missing regions</strong></td>
+                    <td>At the end of conversation, Gem lists ALL region names used: "Before rendering, draw these regions: search_bar, dashboard, submit_button."</td>
+                </tr>
+                <tr>
+                    <td><strong>Invalid enum values</strong></td>
+                    <td>Gem only outputs values from its known list. Never invents new easing curves or transition types.</td>
+                </tr>
+                <tr>
+                    <td><strong>Bad time format</strong></td>
+                    <td>Gem always uses M:SS - M:SS format. Never outputs raw seconds or ambiguous formats.</td>
+                </tr>
+                <tr>
+                    <td><strong>Zoom level out of range</strong></td>
+                    <td>Gem keeps zoom_level between 1.0 and 5.0. Suggests 2.0 as default.</td>
+                </tr>
+                <tr>
+                    <td><strong>Duration missing "s"</strong></td>
+                    <td>Gem always appends "s" to durations: "0.6s", "1.0s".</td>
+                </tr>
+                <tr>
+                    <td><strong>YAML syntax errors</strong></td>
+                    <td>Gem outputs properly indented YAML with correct list syntax (- prefix).</td>
+                </tr>
+                <tr>
+                    <td><strong>Scene ID with spaces</strong></td>
+                    <td>Gem uses snake_case for IDs: "search_bar_demo" not "search bar demo".</td>
+                </tr>
+                <tr>
+                    <td><strong>Overlapping time ranges</strong></td>
+                    <td>Gem ensures each scene starts where the previous one ends. No gaps, no overlaps.</td>
+                </tr>
+            </table>
+
+            <h3>6.3 Gem Conversation Flow</h3>
+
+            <h4>Phase 1: Project Basics</h4>
+            <p>Gem asks:</p>
+            <ul>
+                <li>"What is the name of your project?"</li>
+                <li>"What is your screen recording file called?" (default: source.mp4)</li>
+                <li>"What should the final video be called?" (slug version of project name)</li>
+                <li>"What frame rate? 24fps (cinematic), 30fps (standard), or 60fps (smooth)?" (default: 30)</li>
+                <li>"Resolution? Usually 1920x1080 is perfect." (default: 1920x1080)</li>
+                <li>"What layout? 16:9 only, or also 9:16 for Reels/TikTok, or 1:1 for Instagram?"</li>
+            </ul>
+
+            <h4>Phase 2: The Story</h4>
+            <p>Gem asks: "Tell me about your video. Walk me through what happens in the recording like you are describing it to a friend. What is the main message? What should viewers feel?"</p>
+            <p>Gem listens for: the problem, the wow moment, the emotional goal.</p>
+
+            <h4>Phase 3: Scene by Scene</h4>
+            <p>For each scene, Gem asks in order:</p>
+            <ul>
+                <li>"When does this happen? Like 0:05 to 0:12." (time format: M:SS - M:SS)</li>
+                <li>"Do you want to show the whole screen or zoom into something specific?"</li>
+                <li>If zoom: "What region? (You will draw this later in the region helper)"</li>
+                <li>If zoom: "How close? 1.5x is subtle, 3x is very close."</li>
+                <li>"What should the subtitle say?"</li>
+                <li>"How should the text appear? Fade in word-by-word (smooth), typewriter (classic), slide up (energetic), or just fade in?"</li>
+                <li>"How should this scene end? Crossfade (smooth), wipe (directional), zoom blur (dramatic), or flash cut (punchy)?"</li>
+            </ul>
+            <p>Gem proactively suggests effects: "Want a glowing box around that button?" "Want everything else dimmed so this stands out?" "Want an arrow pointing to it with a label?"</p>
+
+            <h4>Phase 4: Review and Generate</h4>
+            <p>Gem summarizes all scenes in plain English. Asks: "Does this sound right?"</p>
+            <p>Then outputs:</p>
+            <ol>
+                <li>Complete YAML script</li>
+                <li>List of region names: "Before rendering, use region_helper.py to draw these regions: [list]"</li>
+                <li>Instructions: "Save this as projects/YOUR_PROJECT/script.yaml, then draw regions, then run the render command."</li>
+            </ol>
+
+            <h3>6.4 Gem System Prompt</h3>
+            <p>Paste this into Google AI Studio when creating your Gem:</p>
+            <pre>
+# ZOVAC Script Composer — System Prompt
 
 You are a creative video director helping users create YAML scripts for ZOVAC Memark Pro, a tool that turns boring screen recordings into polished product videos with smooth zooms, callout boxes, and animated text.
 
@@ -471,51 +1090,58 @@ Interview the user in plain English about their video idea, then output a comple
 ## Conversation Flow (4 Phases)
 
 ### Phase 1: Project Basics
-Ask:
-- "What's the name of your project?"
-- "What's your screen recording file called?" (default: source.mp4)
-- "What should the final video be called?" (slug version of project name)
-- "What frame rate? 24fps (cinematic), 30fps (standard), or 60fps (smooth)?" (default: 30)
-- "Resolution? Usually 1920x1080 is perfect." (default: 1920x1080)
+Ask one or two questions at a time:
+- "What is the name of your project?"
+- "What is your screen recording file called?" (default: source.mp4)
+- "What should the final video be called?" (suggest lowercase slug)
+- "Frame rate: 24fps (cinematic), 30fps (standard), or 60fps (smooth)?" (default: 30)
+- "Resolution: 1920x1080?" (confirm or ask)
+- "Export formats: 16:9 only, or also 9:16 for Reels/TikTok, or 1:1?"
 
 ### Phase 2: The Story
-Ask: "Tell me about your video. Walk me through what happens in the recording like you're describing it to a friend. What's the main message?"
-
-Listen for:
-- What problem does the tool solve?
-- What's the "wow" moment?
-- What should viewers feel?
+- "Tell me about the video. Walk me through what happens like you are describing it to a friend."
+- "What is the main message? What should the viewer feel or do after watching?"
+- "Who is the audience — customers, investors, your team?"
 
 ### Phase 3: Scene by Scene
-For each scene the user describes:
+For each scene, ask in this order (one or two per message):
 
-Ask:
-- "When does this happen? Like 0:05 to 0:12." (time format: M:SS - M:SS)
-- "Do you want to show the whole screen or zoom into something specific?"
-  - If zoom: "What region? (You'll draw this later in the region helper)"
-  - If zoom: "How close? 1.5x is subtle, 3x is very close."
-- "What should the subtitle say?"
-- "How should the text appear? Fade in word-by-word (smooth), typewriter (classic), slide up (energetic), or just fade in?"
-- "How should this scene end? Crossfade (smooth), wipe (directional), zoom blur (dramatic), or flash cut (punchy)?"
+**Timing:** "When does this part happen? Give me start and end time — like 0:05 to 0:12."
 
-For effects, proactively suggest:
-- Callout box: "Want a glowing box around that button?"
-- Spotlight: "Want everything else dimmed so this stands out?"
-- Arrow: "Want an arrow pointing to it with a label?"
+**Focus:** "What is showing during this part? Whole screen or zoom into something specific?"
+- If zoom: "What region? Give it a name like search_bar or submit_button."
+- If zoom: "How close? 1x = normal, 2x = gentle zoom, 3-4x = very close."
 
-Default to smooth, professional choices:
-- Easing: cubic_ease_in_out
-- Transition duration: 0.3s
-- Subtitle position: bottom_center
+**Camera:** "Should it zoom in (zoom), slowly slide across (pan), zoom in dramatically (dolly_in), or show full screen (fullscreen)?"
 
-### Phase 4: Review & Generate
-Summarize all scenes in plain English. Ask: "Does this sound right?"
+**Easing:** "Should it feel slow and silky smooth, or snappy and energetic?"
+- Maps to: cubic_ease_in_out (smooth) or ease_in_out (snappy)
+
+**Effects:** "Want to draw a glowing box around something? Point an arrow at it? Dim everything else?"
+- callout_box, annotation_arrow, spotlight
+
+**Subtitle:** "What should the subtitle say in this scene?"
+
+**Subtitle Style:** "Should words appear all at once, one by one, or typed out?"
+- fade_in, fade_in_word_by_word, typewriter, slide_up, highlight_current_word
+
+**Transition:** "How should this scene flow to the next? Smooth fade, dramatic zoom blur, wipe, or hard cut?"
+- crossfade, smooth_zoom_in, zoom_out_blur, zoom_blur_push, wipe_left, wipe_up, flash_cut, none
+
+Use smart defaults silently and mention them:
+- "I will default that to a smooth crossfade."
+- "I will set zoom_level to 2.0 as a good starting point."
+
+### Phase 4: Review and Generate
+Give a plain-English summary of every scene. User confirms.
 
 Then output:
 1. Complete YAML script
-2. List of region names they need to define: "Before rendering, use region_helper.py to draw these regions: [list]"
+2. Message: "Here is your complete ZOVAC script! Copy this and save it as projects/YOUR_PROJECT_NAME/script.yaml"
+3. Message: "IMPORTANT: Before rendering, run the region helper to draw these regions: [list all target names]"
+4. Message: "Then run: python engine/render.py --script projects/YOUR_PROJECT/script.yaml --regions projects/YOUR_PROJECT/regions.json --output-dir projects/YOUR_PROJECT/output"
 
-## Valid YAML Values (MEMORIZE THESE)
+## Valid Values (NEVER DEVIATE)
 
 **Easing:** linear, ease_in, ease_out, ease_in_out, cubic_ease_in_out, ease_in_out_sine, spring, bounce_out
 
@@ -535,7 +1161,7 @@ Then output:
 
 **Time format:** M:SS - M:SS or HH:MM:SS - HH:MM:SS
 
-## YAML Template Structure
+## YAML Template
 
 ```yaml
 zovac_schema_version: "1.0"
@@ -546,12 +1172,25 @@ project:
   output_name: "project_name_slug"
   fps: 30
   resolution: "1920x1080"
+  source_aspect: "16:9"
+  output_aspect: "9:16"
+  layout_strategy: "follow_target"
   export_formats:
     - "16:9"
+    - "9:16"
   brand_profile: "default"
 
+cuts:
+  - id: "problem_hook"
+    time: "0:00 - 0:05"
+    label: "Problem Hook"
+
+  - id: "search_demo"
+    time: "0:05 - 0:13"
+    label: "Search Feature"
+
 scenes:
-  - id: "intro"
+  - id: "problem_hook"
     time: "0:00 - 0:05"
     visual:
       type: "fullscreen"
@@ -563,8 +1202,8 @@ scenes:
       type: "crossfade"
       duration: "0.3s"
 
-  - id: "feature_zoom"
-    time: "0:05 - 0:15"
+  - id: "search_demo"
+    time: "0:05 - 0:13"
     visual:
       type: "zoom"
       target: "search_bar"
@@ -586,130 +1225,717 @@ scenes:
 ```
 
 ## Personality Rules
-- Friendly and warm, not robotic
-- Ask 1-2 questions at a time max
+- Friendly, warm, encouraging — never robotic
+- Ask 1-2 questions at a time maximum
 - Rephrase technical terms into plain English
 - After each scene, confirm with a human summary
-- Mention smart defaults you're applying
-- Never show YAML until the end
+- Mention smart defaults you are applying
+- Never show YAML syntax to the user mid-conversation
+- Output YAML only at the very end
 - Be encouraging — "This is going to look great!"
 
-## Region Handling
-When a user says they want to zoom to "the dashboard" or "the search bar", add that as a region target in the YAML. Then at the end, tell them:
-
-"Before rendering, run the region helper to draw these regions: [list]. The helper will let you click-and-drag boxes on your video frame."
-
 Begin by warmly greeting the user and asking about their project name.
-</code></pre>
+            </pre>
 
-        <div class="callout callout-success">
-            <div class="callout-title">✅ EXIT CRITERIA</div>
-            <p>You can have a full conversation with the Gem, describe a 3-scene video, and it outputs valid YAML with correct syntax. Test it by copying the output YAML and checking that all field names match the template.</p>
-        </div>
+            <h3>6.5 Setting Up the Gem</h3>
+            <ol>
+                <li>Go to <a href="https://aistudio.google.com" target="_blank" style="color: var(--primary);">aistudio.google.com</a></li>
+                <li>Click "New Gem" (or "Create New" → "Gem")</li>
+                <li>Paste the system prompt above into the instructions field</li>
+                <li>Name it: "ZOVAC Script Composer"</li>
+                <li>Save</li>
+                <li>Start a conversation — describe your video idea</li>
+                <li>Copy the YAML output when ready</li>
+            </ol>
+        </section>
 
-        <h3><span class="step-number">3</span> Build the Pixel Engine</h3>
+        <!-- SECTION 7: ARCHITECTURE -->
+        <section class="content-section" id="sec-architecture">
+            <span class="section-anchor" id="sec-architecture"></span>
+            <h2><span class="badge badge-personal">PERSONAL</span> Architecture</h2>
 
-        <p>This is the most complex step. The engine has 10 Python files working together. I'll guide you through building them one by one.</p>
+            <h3>7.1 The Three Components</h3>
 
-        <div class="callout callout-warning">
-            <div class="callout-title">REALISTIC TIMELINE</div>
-            <p>If you're working with me (Claude) to build this: <strong>2-4 weeks</strong> of steady work. We'll build one module at a time, test it, then move to the next. I'll write all the code — you just run it and tell me what breaks.</p>
-        </div>
+            <div class="flow-box">
+                <div class="flow-box-header">1. Gemini Gem (Script Composer)</div>
+                <div class="flow-box-desc">You describe your video idea in plain English. The Gem interviews you about timing, zoom targets, effects, and subtitles. It outputs a complete YAML script. You copy-paste it into a file.</div>
+            </div>
 
-        <h4>Build Order:</h4>
-        <ol>
-            <li><strong>validator.py</strong> — Script validation (1 day)</li>
-            <li><strong>script_parser.py</strong> — YAML parsing + time parsing (1 day)</li>
-            <li><strong>brand.py</strong> — Brand config with defaults (1 day)</li>
-            <li><strong>motion.py</strong> — Zoom/pan with easing curves (2-3 days)</li>
-            <li><strong>subtitles.py</strong> — Text rendering with animations (2-3 days)</li>
-            <li><strong>effects.py</strong> — Callout box, arrow, spotlight (3-4 days)</li>
-            <li><strong>transitions.py</strong> — Crossfade, wipe using FFmpeg xfade (2 days)</li>
-            <li><strong>compositor.py</strong> — Frame-by-frame assembly (3-4 days)</li>
-            <li><strong>exporter.py</strong> — Final MP4 packaging (1 day)</li>
-            <li><strong>render.py</strong> — CLI entry point tying it all together (1 day)</li>
-        </ol>
+            <div class="flow-box">
+                <div class="flow-box-header">2. Region Helper (Python Script)</div>
+                <div class="flow-box-desc">A small Python script using OpenCV. It opens your video frame. You click-and-drag to draw boxes around UI elements. It saves coordinates to a JSON file. You can re-open it to add or edit regions.</div>
+            </div>
 
-        <p><strong>We start with the simplest piece and prove it works before moving on.</strong></p>
+            <div class="flow-box">
+                <div class="flow-box-header">3. Pixel Engine (Python Application)</div>
+                <div class="flow-box-desc">The main renderer. Reads your YAML script, your video file, your regions JSON, and your brand config. Produces frame-by-frame rendered output with smooth zooms, callout effects, animated subtitles, and transitions. Outputs a polished MP4.</div>
+            </div>
 
-        <div class="callout">
-            <div class="callout-title">FIRST MILESTONE: Validator + Parser</div>
-            <p>Once validator.py and script_parser.py work, you can run:</p>
-            <pre><code>python -c "from script_parser import parse_script; print(parse_script('test.yaml'))"</code></pre>
-            <p>And it will print your parsed script structure. That's proof the foundation works.</p>
-        </div>
+            <h3>7.2 Data Flow</h3>
+            <pre>
+You (human)
+    |
+    | Chat in plain English
+    v
+Gemini Gem (AI Studio)
+    |
+    | Outputs YAML script
+    v
+projects/my_video/script.yaml  <-- You save the file
+    |
+    | Read by
+    v
+Region Helper (OpenCV GUI)
+    |
+    | You draw boxes, it saves
+    v
+projects/my_video/regions.json
+    |
+    | Both read by
+    v
+Pixel Engine (Python + FFmpeg)
+    |
+    | Renders frame-by-frame
+    v
+projects/my_video/output/final.mp4  <-- You watch the result
+            </pre>
 
-        <!-- USAGE WORKFLOW -->
-        <h2>Daily Usage (Once Built)</h2>
+            <h3>7.3 No Network Required After Setup</h3>
+            <div class="callout callout-success">
+                <div class="callout-title">OFFLINE CAPABLE</div>
+                <p>Once the Gem is set up and the engine is installed, you can create videos <strong>completely offline</strong>:</p>
+                <ul>
+                    <li>Write YAML by hand (no Gem needed if you know the syntax)</li>
+                    <li>Draw regions with the helper (pure OpenCV, no internet)</li>
+                    <li>Render with the engine (Python + FFmpeg, no API calls)</li>
+                </ul>
+                <p>The Gem is a convenience, not a requirement. You can write YAML manually anytime.</p>
+            </div>
+        </section>
 
-        <p>After everything is built, your workflow is:</p>
+        <!-- SECTION 8: FILE STRUCTURE -->
+        <section class="content-section" id="sec-file-structure">
+            <span class="section-anchor" id="sec-file-structure"></span>
+            <h2><span class="badge badge-personal">PERSONAL</span> File Structure</h2>
 
-        <ol>
-            <li><strong>Record your screen</strong>
-                <pre><code># Use QuickTime, OBS, or any screen recorder
-# Save as: projects/my_project/source.mp4</code></pre>
-            </li>
+            <pre>
+zovac-memark-pro/               # Root folder (anywhere on your disk)
+│
+├── engine/                      # The Python renderer (build once, use forever)
+│   ├── render.py                # Main entry point — CLI orchestrator
+│   ├── script_parser.py         # YAML parsing, time parsing, region loading
+│   ├── compositor.py            # Frame-by-frame rendering, FFmpeg management
+│   ├── effects.py               # callout_box, annotation_arrow, spotlight, motion_blur
+│   ├── subtitles.py             # Text rendering: fade_in, typewriter, word-by-word, slide_up
+│   ├── motion.py                # Camera movements: zoom, pan, dolly + 8 easing curves
+│   ├── transitions.py           # Scene transitions: crossfade, wipe, zoom_blur, flash_cut
+│   ├── exporter.py              # Multi-format export: 16:9, 9:16, 1:1
+│   ├── validator.py             # Script validation against regions and enums
+│   ├── brand.py                 # Brand profile loading with DEFAULT_BRAND fallback
+│   └── requirements.txt         # Python dependencies
+│
+├── helpers/                     # Utility scripts
+│   ├── region_helper.py         # Click-and-drag region definition (OpenCV)
+│   └── test_video_generator.py  # Creates fake app UI for testing (optional)
+│
+├── projects/                    # Your video projects (one folder per video)
+│   └── myapp_demo/              # Example project
+│       ├── source.mp4           # Your screen recording
+│       ├── script.yaml          # Gem generates this (or you write it)
+│       ├── regions.json         # region_helper generates this
+│       ├── brand.json           # Optional: per-project brand override
+│       └── output/              # Engine writes here
+│           ├── myapp_demo_master.mp4      # Full quality 16:9
+│           ├── myapp_demo_16x9.mp4          # 16:9 copy
+│           ├── myapp_demo_9x16.mp4         # 9:16 vertical (smart crop)
+│           ├── myapp_demo_1x1.mp4           # 1:1 square (smart crop)
+│           ├── preview_full.mp4             # Preview: first 20s
+│           ├── preview_scene_*.mp4          # Preview: single scene
+│           └── preview_cut_*.mp4            # Preview: single or multiple cuts
+│
+└── ~/.zovac/                    # Global config (in your home directory)
+    ├── brand.json               # Your personal default brand
+    └── brands/                  # Reusable brand profiles
+        ├── client_a.json
+        └── client_b.json
+            </pre>
 
-            <li><strong>Talk to the Gem</strong>
-                <pre><code># Open Google AI Studio, start a chat with your Gem
-# Describe your video idea
-# Copy the YAML output to: projects/my_project/script.yaml</code></pre>
-            </li>
+            <h3>8.1 Engine Files (What Each Does)</h3>
+            <table>
+                <tr>
+                    <th>File</th>
+                    <th>Purpose</th>
+                    <th>Lines of Code (est.)</th>
+                </tr>
+                <tr>
+                    <td><code>render.py</code></td>
+                    <td>CLI entry point. Parses arguments, coordinates all other modules, reports progress to stdout.</td>
+                    <td>~150</td>
+                </tr>
+                <tr>
+                    <td><code>script_parser.py</code></td>
+                    <td>Reads YAML into Python dict. Parses time strings (SS, MM:SS, HH:MM:SS). Loads regions JSON.</td>
+                    <td>~200</td>
+                </tr>
+                <tr>
+                    <td><code>compositor.py</code></td>
+                    <td>Extracts frames from source video via FFmpeg. Applies zooms, pans, overlays effects and subtitles frame-by-frame. Writes temp clip files.</td>
+                    <td>~400</td>
+                </tr>
+                <tr>
+                    <td><code>effects.py</code></td>
+                    <td>Implements callout_box (animated stroke), annotation_arrow (growing arrow), spotlight (dim outside target), motion_blur (directional blur).</td>
+                    <td>~350</td>
+                </tr>
+                <tr>
+                    <td><code>subtitles.py</code></td>
+                    <td>Renders text with animation styles: fade_in (opacity ramp), typewriter (char-by-char), fade_in_word_by_word, slide_up (translate + opacity), highlight_current_word (karaoke).</td>
+                    <td>~300</td>
+                </tr>
+                <tr>
+                    <td><code>motion.py</code></td>
+                    <td>Camera movement math: zoom (scale + translate), pan (translate), dolly_in (scale + perspective). Easing curves: linear, ease_in, ease_out, ease_in_out, cubic_ease_in_out, ease_in_out_sine, spring, bounce_out.</td>
+                    <td>~250</td>
+                </tr>
+                <tr>
+                    <td><code>transitions.py</code></td>
+                    <td>Joins scene clips with FFmpeg xfade filter: crossfade, smooth_zoom_in, zoom_out_blur, zoom_blur_push, wipe_left, wipe_up, flash_cut.</td>
+                    <td>~200</td>
+                </tr>
+                <tr>
+                    <td><code>exporter.py</code></td>
+                    <td>Multi-format export: master 16:9, 9:16 with smart crop, 1:1 with smart crop. Uses FFmpeg crop/scale filters with safe-zone awareness.</td>
+                    <td>~200</td>
+                </tr>
+                <tr>
+                    <td><code>validator.py</code></td>
+                    <td>Checks: all targets exist in regions or are "fullscreen", all easing values valid, all transition types valid, all subtitle styles valid, zoom_level in [1.0, 5.0], durations end in "s", time formats valid, no overlapping scenes.</td>
+                    <td>~250</td>
+                </tr>
+                <tr>
+                    <td><code>brand.py</code></td>
+                    <td>Loads brand config JSON with fallback chain: project → named → global → DEFAULT_BRAND. Applies colors, fonts, logo, safe zones to rendering pipeline.</td>
+                    <td>~150</td>
+                </tr>
+            </table>
 
-            <li><strong>Define regions</strong>
-                <pre><code>python helpers/region_helper.py \
-  projects/my_project/source.mp4 \
-  projects/my_project/regions.json</code></pre>
-            </li>
+            <p><strong>Total engine code: ~2,450 lines of Python.</strong> Built incrementally over 2-3 weeks.</p>
+        </section>
 
-            <li><strong>Render</strong>
-                <pre><code>python engine/render.py \
-  --script projects/my_project/script.yaml \
-  --regions projects/my_project/regions.json \
-  --output-dir projects/my_project/output
+        <!-- SECTION 9: BUILD ORDER -->
+        <section class="content-section" id="sec-build-order">
+            <span class="section-anchor" id="sec-build-order"></span>
+            <h2><span class="badge badge-personal">PERSONAL</span> Build Order</h2>
 
-# Wait 2-4 minutes
-# Output: projects/my_project/output/final.mp4</code></pre>
-            </li>
+            <div class="callout callout-critical">
+                <div class="callout-title">BUILD PRINCIPLE: ONE MODULE AT A TIME, PROVE IT WORKS</div>
+                <p>We do not build the entire engine and then test. We build one module, write a test script, prove it works, then build the next. Each module is a complete, testable artifact.</p>
+            </div>
 
-            <li><strong>Watch your video</strong>
-                <pre><code>open projects/my_project/output/final.mp4</code></pre>
-            </li>
-        </ol>
+            <h3>9.1 Week 1: Foundation</h3>
 
-        <div class="callout callout-success">
-            <div class="callout-title">GOAL: 30 MINUTES PER VIDEO</div>
-            <p>From screen recording to polished output in under 30 minutes. Steps 1-3 take ~15 minutes. Rendering takes ~3 minutes. Iteration (tweaking YAML) takes ~10 minutes.</p>
-        </div>
+            <h4>Day 1-2: Region Helper</h4>
+            <table>
+                <tr>
+                    <th>Task</th>
+                    <th>Deliverable</th>
+                    <th>Exit Criteria</th>
+                </tr>
+                <tr>
+                    <td>Build <code>helpers/region_helper.py</code></td>
+                    <td>OpenCV-based click-and-drag region selector</td>
+                    <td>Draw 3 boxes on a real video, save to JSON, coordinates are integers in video pixel space</td>
+                </tr>
+                <tr>
+                    <td>Test with real footage</td>
+                    <td>A <code>regions.json</code> file with real coordinates</td>
+                    <td>Open JSON and verify x, y, w, h look reasonable for your video resolution</td>
+                </tr>
+            </table>
 
-        <!-- WHAT'S NEXT -->
-        <h2>Next Steps</h2>
+            <h4>Day 3-4: Script Parser + Validator</h4>
+            <table>
+                <tr>
+                    <th>Task</th>
+                    <th>Deliverable</th>
+                    <th>Exit Criteria</th>
+                </tr>
+                <tr>
+                    <td>Build <code>engine/script_parser.py</code></td>
+                    <td>YAML reader + time parser (SS, MM:SS, HH:MM:SS)</td>
+                    <td><code>parse_script("test.yaml")</code> returns a Python dict with correct structure</td>
+                </tr>
+                <tr>
+                    <td>Build <code>engine/validator.py</code></td>
+                    <td>Script validation against regions and enums</td>
+                    <td>Invalid script returns clear errors. Valid script returns (True, [], [])</td>
+                </tr>
+                <tr>
+                    <td>Build <code>engine/brand.py</code></td>
+                    <td>Brand config loader with fallback chain</td>
+                    <td>Missing brand file falls back to DEFAULT_BRAND. Valid brand loads colors correctly.</td>
+                </tr>
+            </table>
 
-        <p>You have three options:</p>
+            <h4>Day 5-7: Motion Engine + Test Video</h4>
+            <table>
+                <tr>
+                    <th>Task</th>
+                    <th>Deliverable</th>
+                    <th>Exit Criteria</th>
+                </tr>
+                <tr>
+                    <td>Build <code>engine/motion.py</code></td>
+                    <td>Zoom, pan, dolly with 8 easing curves</td>
+                    <td>Generate a test MP4 showing a zoom from fullscreen to a target box. Movement is smooth, not jerky.</td>
+                </tr>
+                <tr>
+                    <td>Build <code>helpers/test_video_generator.py</code></td>
+                    <td>Fake app UI generator for testing</td>
+                    <td>Generates a 15-second MP4 with header, search bar, sidebar, content area, animated element</td>
+                </tr>
+                <tr>
+                    <td>Integration test</td>
+                    <td>Motion + parser + validator working together</td>
+                    <td>Parse a YAML with one zoom scene, render it, output MP4 plays correctly</td>
+                </tr>
+            </table>
 
-        <h3>Option A: Start with Region Helper</h3>
-        <p>Easiest to build and test. Takes 30 minutes. Proves the workflow works.</p>
-        <p><strong>Say:</strong> "Let's build the region helper first."</p>
+            <h3>9.2 Week 2: Core Effects</h3>
 
-        <h3>Option B: Start with Gem System Prompt</h3>
-        <p>Design and refine the conversation flow. No coding. Just prompt engineering.</p>
-        <p><strong>Say:</strong> "Let's design the Gem conversation."</p>
+            <h4>Day 8-10: Subtitles + Effects</h4>
+            <table>
+                <tr>
+                    <th>Task</th>
+                    <th>Deliverable</th>
+                    <th>Exit Criteria</th>
+                </tr>
+                <tr>
+                    <td>Build <code>engine/subtitles.py</code></td>
+                    <td>Text rendering with 5 animation styles</td>
+                    <td>Render test MP4s: one with typewriter text, one with fade_in_word_by_word, one with slide_up. All readable and positioned correctly.</td>
+                </tr>
+                <tr>
+                    <td>Build <code>engine/effects.py</code></td>
+                    <td>callout_box, annotation_arrow, spotlight, motion_blur</td>
+                    <td>Render test MP4s: callout draws itself around target, arrow grows from label to target, spotlight dims outside region, motion blur applies during fast movement.</td>
+                </tr>
+            </table>
 
-        <h3>Option C: Start with the Engine</h3>
-        <p>Jump straight to the hard part. We build validator.py first.</p>
-        <p><strong>Say:</strong> "Let's start building the engine."</p>
+            <h4>Day 11-12: Compositor</h4>
+            <table>
+                <tr>
+                    <th>Task</th>
+                    <th>Deliverable</th>
+                    <th>Exit Criteria</th>
+                </tr>
+                <tr>
+                    <td>Build <code>engine/compositor.py</code></td>
+                    <td>Frame-by-frame assembly: extract subclip, apply motion, overlay effects, burn subtitles</td>
+                    <td>Render a complete scene (zoom + callout + subtitle) from source video. Output MP4 has all three elements correctly positioned and timed.</td>
+                </tr>
+            </table>
 
-        <div class="callout callout-warning">
-            <div class="callout-title">MY RECOMMENDATION</div>
-            <p>Start with <strong>Option A</strong> (Region Helper). It's the fastest win. You get a working tool in 30 minutes. Then we tackle the Gem (Option B), then the engine (Option C). This builds momentum and proves each piece before connecting them.</p>
-        </div>
+            <h4>Day 13-14: Transitions + Exporter</h4>
+            <table>
+                <tr>
+                    <th>Task</th>
+                    <th>Deliverable</th>
+                    <th>Exit Criteria</th>
+                </tr>
+                <tr>
+                    <td>Build <code>engine/transitions.py</code></td>
+                    <td>Scene-to-scene transitions via FFmpeg xfade</td>
+                    <td>Two scene clips joined with crossfade. Transition is visible, not a hard cut.</td>
+                </tr>
+                <tr>
+                    <td>Build <code>engine/exporter.py</code></td>
+                    <td>Multi-format export: 16:9, 9:16, 1:1</td>
+                    <td>Master MP4 + 9:16 crop + 1:1 crop all exist and play. 9:16 keeps zoom target visible (not naive center-crop).</td>
+                </tr>
+            </table>
+
+            <h3>9.3 Week 3: Integration + Polish</h3>
+
+            <h4>Day 15-17: Render Orchestrator</h4>
+            <table>
+                <tr>
+                    <th>Task</th>
+                    <th>Deliverable</th>
+                    <th>Exit Criteria</th>
+                </tr>
+                <tr>
+                    <td>Build <code>engine/render.py</code></td>
+                    <td>CLI entry point tying all modules together</td>
+                    <td>Single command renders full video: <code>python engine/render.py --script ... --regions ... --output-dir ...</code></td>
+                </tr>
+                <tr>
+                    <td>Add preview mode</td>
+                    <td><code>--preview</code> flag for fast low-res renders</td>
+                    <td>Preview renders in ~30 seconds. Full render in ~3 minutes. Both produce valid MP4s.</td>
+                </tr>
+                <tr>
+                    <td>Add scene/cut preview</td>
+                    <td><code>--scene</code> and <code>--cut</code> flags</td>
+                    <td><code>--scene search_demo --preview</code> renders only that scene. <code>--cut A,B --preview</code> renders both cuts.</td>
+                </tr>
+            </table>
+
+            <h4>Day 18-19: Gem Setup + End-to-End Test</h4>
+            <table>
+                <tr>
+                    <th>Task</th>
+                    <th>Deliverable</th>
+                    <th>Exit Criteria</th>
+                </tr>
+                <tr>
+                    <td>Set up Gemini Gem</td>
+                    <td>ZOVAC Script Composer in Google AI Studio</td>
+                    <td>Have a conversation, get valid YAML output, save to script.yaml</td>
+                </tr>
+                <tr>
+                    <td>End-to-end test</td>
+                    <td>Complete workflow: Gem → regions → render → watch</td>
+                    <td>Video plays in VLC with visible zooms, callouts, subtitles, transitions. No crashes.</td>
+                </tr>
+            </table>
+
+            <h4>Day 20-21: Bug Fixes + Performance</h4>
+            <table>
+                <tr>
+                    <th>Task</th>
+                    <th>Deliverable</th>
+                    <th>Exit Criteria</th>
+                </tr>
+                <tr>
+                    <td>Fix frame-accurate seeking</td>
+                    <td>FFmpeg -ss placed AFTER -i</td>
+                    <td>Scene at 0:05 starts at exactly 5.000s (verified with ffprobe)</td>
+                </tr>
+                <tr>
+                    <td>Fix null checks</td>
+                    <td>All stdout/stderr reads guarded</td>
+                    <td>Engine fails gracefully with clear error messages, not Python tracebacks</td>
+                </tr>
+                <tr>
+                    <td>Performance optimization</td>
+                    <td>Render time under 2× video duration</td>
+                    <td>40-second video renders in under 80 seconds (preview) or 4 minutes (full)</td>
+                </tr>
+            </table>
+
+            <h3>9.4 Total Timeline</h3>
+            <table>
+                <tr>
+                    <th>Week</th>
+                    <th>Focus</th>
+                    <th>What Works</th>
+                </tr>
+                <tr>
+                    <td><strong>Week 1</strong></td>
+                    <td>Foundation: Region helper, parser, validator, motion engine</td>
+                    <td>You can draw regions and render a single zoom scene</td>
+                </tr>
+                <tr>
+                    <td><strong>Week 2</strong></td>
+                    <td>Core effects: Subtitles, callouts, arrows, spotlight, transitions, exporter</td>
+                    <td>You can render a multi-scene video with all effects</td>
+                </tr>
+                <tr>
+                    <td><strong>Week 3</strong></td>
+                    <td>Integration: Render orchestrator, preview mode, Gem setup, end-to-end test</td>
+                    <td>Complete workflow: describe video in chat → get YAML → draw regions → render → download</td>
+                </tr>
+                <tr>
+                    <td><strong>Total</strong></td>
+                    <td>15 working days (3 weeks)</td>
+                    <td>Fully working personal video production tool</td>
+                </tr>
+            </table>
+        </section>
+
+        <!-- SECTION 10: DAILY USAGE -->
+        <section class="content-section" id="sec-usage">
+            <span class="section-anchor" id="sec-usage"></span>
+            <h2><span class="badge badge-personal">PERSONAL</span> Daily Usage Workflow</h2>
+
+            <h3>10.1 The Complete Workflow (Step by Step)</h3>
+
+            <h4>Step 1: Record Your Screen</h4>
+            <pre>
+# Use QuickTime Player (Mac), OBS (any OS), or any screen recorder
+# Record your app in action: clicking, typing, showing features
+# Save as: projects/my_video/source.mp4
+# Recommended: 1920x1080, 30fps, 30-60 seconds duration
+            </pre>
+
+            <h4>Step 2: Create Project Folder</h4>
+            <pre>
+mkdir -p projects/my_video/output
+# Copy your recording
+cp ~/Desktop/screen_recording.mp4 projects/my_video/source.mp4
+            </pre>
+
+            <h4>Step 3: Talk to the Gem</h4>
+            <pre>
+# 1. Open Google AI Studio (aistudio.google.com)
+# 2. Start chat with your "ZOVAC Script Composer" Gem
+# 3. Describe your video:
+#    "I want to showcase my inventory management app. 
+#     The video starts with me scrolling through a messy spreadsheet.
+#     Then I open my app and search for a product.
+#     The search is instant. Then I show the dashboard with charts.
+#     End with a call to action."
+# 4. Answer the Gem's questions about timing, zoom targets, effects, subtitles
+# 5. Gem outputs complete YAML
+# 6. Copy the YAML and save it:
+cat > projects/my_video/script.yaml << 'YAML_EOF'
+[paste the YAML here]
+YAML_EOF
+            </pre>
+
+            <h4>Step 4: Draw Regions</h4>
+            <pre>
+python helpers/region_helper.py \
+  projects/my_video/source.mp4 \
+  projects/my_video/regions.json
+
+# A window opens showing your video frame
+# Click and drag to draw boxes around:
+#   - search_bar
+#   - dashboard_chart
+#   - submit_button
+# Type names when prompted
+# Press Enter with empty name when done
+# regions.json is saved automatically
+            </pre>
+
+            <h4>Step 5: Preview Individual Scenes</h4>
+            <pre>
+# Preview scene 1 (intro)
+python engine/render.py \
+  --script projects/my_video/script.yaml \
+  --regions projects/my_video/regions.json \
+  --output-dir projects/my_video/output \
+  --scene intro \
+  --preview
+
+open projects/my_video/output/preview_scene_intro.mp4
+# Watch it. Does the zoom feel right? Is the text readable?
+
+# Preview scene 2 (search demo)
+python engine/render.py ... --scene search_demo --preview
+open projects/my_video/output/preview_scene_search_demo.mp4
+# Watch it. Adjust script.yaml if needed.
+
+# Preview scene 3 (dashboard)
+python engine/render.py ... --scene dashboard --preview
+# ... and so on for each scene
+            </pre>
+
+            <h4>Step 6: Preview All Cuts Together</h4>
+            <pre>
+# When all individual scenes look good, preview the full flow
+python engine/render.py \
+  --script projects/my_video/script.yaml \
+  --regions projects/my_video/regions.json \
+  --output-dir projects/my_video/output \
+  --cut intro,search_demo,dashboard,cta \
+  --preview
+
+open projects/my_video/output/preview_cut_intro_search_demo_dashboard_cta.mp4
+# Watch the transitions between cuts. Does the flow feel right?
+            </pre>
+
+            <h4>Step 7: Full Quality Render</h4>
+            <pre>
+# Remove --preview and --scene/--cut for full render
+python engine/render.py \
+  --script projects/my_video/script.yaml \
+  --regions projects/my_video/regions.json \
+  --output-dir projects/my_video/output
+
+# Wait 3-4 minutes
+# Output files:
+#   projects/my_video/output/my_video_master.mp4      (16:9 Full HD)
+#   projects/my_video/output/my_video_16x9.mp4        (16:9 copy)
+#   projects/my_video/output/my_video_9x16.mp4        (9:16 vertical)
+#   projects/my_video/output/my_video_1x1.mp4         (1:1 square)
+            </pre>
+
+            <h4>Step 8: Watch and Share</h4>
+            <pre>
+# Mac
+open projects/my_video/output/my_video_master.mp4
+
+# Linux
+xdg-open projects/my_video/output/my_video_master.mp4
+
+# Or drag into VLC, QuickTime, or any video player
+# Upload to YouTube, Twitter, LinkedIn, ProductHunt, etc.
+            </pre>
+
+            <div class="callout callout-success">
+                <div class="callout-title">TOTAL TIME PER VIDEO</div>
+                <table>
+                    <tr>
+                        <th>Step</th>
+                        <th>Time</th>
+                    </tr>
+                    <tr>
+                        <td>Record screen</td>
+                        <td>5 minutes</td>
+                    </tr>
+                    <tr>
+                        <td>Chat with Gem</td>
+                        <td>10 minutes</td>
+                    </tr>
+                    <tr>
+                        <td>Draw regions</td>
+                        <td>5 minutes</td>
+                    </tr>
+                    <tr>
+                        <td>Preview and tweak (3-5 iterations)</td>
+                        <td>10 minutes</td>
+                    </tr>
+                    <tr>
+                        <td>Full render</td>
+                        <td>3 minutes</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Total</strong></td>
+                        <td><strong>~33 minutes</strong></td>
+                    </tr>
+                </table>
+            </div>
+
+            <h3>10.2 Common Tweaks (After Preview)</h3>
+            <table>
+                <tr>
+                    <th>Problem</th>
+                    <th>Fix in script.yaml</th>
+                    <th>Re-preview</th>
+                </tr>
+                <tr>
+                    <td>Zoom is too slow</td>
+                    <td>Reduce <code>zoom_level</code> from 2.5 to 1.8</td>
+                    <td><code>--scene [id] --preview</code></td>
+                </tr>
+                <tr>
+                    <td>Zoom feels jerky</td>
+                    <td>Change <code>easing</code> to <code>cubic_ease_in_out</code> or <code>spring</code></td>
+                    <td><code>--scene [id] --preview</code></td>
+                </tr>
+                <tr>
+                    <td>Text is too small</td>
+                    <td>Edit <code>brand.json</code>: increase <code>subtitle.font_size</code></td>
+                    <td><code>--scene [id] --preview</code></td>
+                </tr>
+                <tr>
+                    <td>Text is too low</td>
+                    <td>Edit <code>brand.json</code>: increase <code>subtitle.bottom_margin</code></td>
+                    <td><code>--scene [id] --preview</code></td>
+                </tr>
+                <tr>
+                    <td>Callout color is wrong</td>
+                    <td>Edit <code>brand.json</code>: change <code>colors.callout_stroke</code></td>
+                    <td><code>--scene [id] --preview</code></td>
+                </tr>
+                <tr>
+                    <td>Transition is too abrupt</td>
+                    <td>Increase <code>transition_out.duration</code> from "0.3s" to "0.6s"</td>
+                    <td><code>--cut [id1],[id2] --preview</code></td>
+                </tr>
+                <tr>
+                    <td>Subtitle text is wrong</td>
+                    <td>Edit <code>subtitle.text</code> directly in YAML</td>
+                    <td><code>--scene [id] --preview</code></td>
+                </tr>
+                <tr>
+                    <td>Region is slightly off</td>
+                    <td>Re-run region_helper.py and redraw the box</td>
+                    <td><code>--scene [id] --preview</code></td>
+                </tr>
+            </table>
+
+            <h3>10.3 File Naming Convention</h3>
+            <pre>
+# Project folder: descriptive name, lowercase, underscores
+projects/
+  ├── inventory_app_demo/          # Good
+  ├── myapp-v2-feature/            # Good
+  ├── Video 1/                     # Bad (spaces, vague)
+  └── temp/                        # Bad (not descriptive)
+
+# Output files: {output_name}_{format}.mp4
+# output_name comes from YAML: project.output_name
+output/
+  ├── inventory_demo_master.mp4    # 16:9 Full HD master
+  ├── inventory_demo_16x9.mp4      # 16:9 copy
+  ├── inventory_demo_9x16.mp4      # 9:16 vertical
+  ├── inventory_demo_1x1.mp4       # 1:1 square
+  ├── preview_full.mp4             # Full preview (first 20s)
+  ├── preview_scene_intro.mp4      # Scene preview
+  └── preview_cut_search.mp4       # Cut preview
+            </pre>
+
+            <h3>10.4 Tips for Best Results</h3>
+            <ul>
+                <li><strong>Record in good lighting:</strong> Your screen should be bright and readable. Dark themes work better than light themes for video.</li>
+                <li><strong>Keep mouse movement smooth:</strong> Jerky cursor movement looks amateur. Move deliberately, pause before clicks.</li>
+                <li><strong>Record 10-20% extra:</strong> If you need 30 seconds of content, record 35 seconds. Gives you padding for transitions.</li>
+                <li><strong>Use consistent UI scale:</strong> Do not change browser zoom or OS scaling mid-recording. Regions are pixel-based.</li>
+                <li><strong>Name regions descriptively:</strong> "search_bar" is better than "box1". Helps the Gem and your future self.</li>
+                <li><strong>Start with 2-3 scenes:</strong> Do not try to render a 10-scene epic on day one. Build complexity gradually.</li>
+                <li><strong>Save brand.json templates:</strong> Once you find colors that work, save them as reusable brand profiles.</li>
+            </ul>
+        </section>
 
         <!-- FOOTER -->
-        <div style="margin-top: 80px; padding-top: 40px; border-top: 1px solid var(--border); text-align: center;">
-            <h2 style="font-size: 24px; border: none; padding: 0; margin: 0;">ZOVAC<span class="dot">.</span> Memark Pro</h2>
-            <p style="color: var(--text-dim); margin-top: 12px; font-size: 13px;">Personal Build Guide — Version 1.0</p>
-            <p style="color: var(--text-dim); margin-top: 24px; font-size: 13px;">Ready when you are. Pick an option and we'll start building.</p>
-        </div>
-    </div>
+        <section class="content-section" style="text-align: center; padding: 64px 48px;">
+            <h2 style="font-size: 32px;">ZOVAC<span style="color: var(--accent-warm)">.</span> Memark Pro</h2>
+            <p style="color: var(--text-dim); margin-top: 16px;">Personal Local Build Guide</p>
+            <p style="color: var(--text-dim); font-size: 13px; margin-top: 8px;">Version 2.0 | For Personal Use Only | No Hosting, No Database, No Cloud</p>
+            <p style="color: var(--text-dim); font-size: 13px; margin-top: 24px;">This document is your single source of truth.<br>Any ambiguity is resolved by updating this document, not by making assumptions.</p>
+            <div style="margin-top: 32px; padding: 16px; background: var(--bg-elevated); border-radius: 8px; display: inline-block;">
+                <p style="color: var(--text-muted); font-size: 13px; margin: 0;"><strong>Ready to build?</strong> Start with the Region Helper (Day 1) or jump to the Engine (Day 3).</p>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        const sections = document.querySelectorAll('.content-section');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 100) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
